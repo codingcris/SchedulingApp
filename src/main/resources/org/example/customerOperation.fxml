@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="51.0" layoutY="81.0" text="Customer" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane maxHeight="-Infinity" HBox.hgrow="ALWAYS">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox GridPane.rowIndex="3">
+                     <children>
+                        <Label text="Name" />
+                        <TextField fx:id="nameField" maxWidth="-Infinity" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <GridPane.margin>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                     <children>
+                        <Label text="Phone Number" />
+                        <TextField fx:id="phoneField" maxWidth="-Infinity" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <GridPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox GridPane.rowIndex="4">
+                     <children>
+                        <Label text="Address" />
+                        <TextField fx:id="addressField">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Address Continued (optional)">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="addressField2">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <GridPane.margin>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <Label text="ID" />
+                        <TextField fx:id="idField" disable="true" editable="false" maxWidth="200.0" text="AUTO GENERATED">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox GridPane.rowIndex="5" GridPane.vgrow="SOMETIMES">
+                     <children>
+                        <Label text="Country" />
+                        <ComboBox fx:id="countryComboBox" prefWidth="150.0">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                     </children>
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <children>
+                        <Label text="State" />
+                        <ComboBox fx:id="firstDivisionComboBox" disable="true" prefWidth="150.0" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" fillWidth="false" prefWidth="151.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                     <children>
+                        <Label text="Postal Code" />
+                        <TextField fx:id="postalCodeField" alignment="TOP_LEFT" maxWidth="150.0" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </GridPane.margin>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets left="40.0" right="40.0" />
+               </HBox.margin>
+            </GridPane>
+         </children>
+      </HBox>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="60.0">
+        <buttons>
+          <Button fx:id="cancel" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#addCustomer" text="Save" />
+        </buttons>
+      </ButtonBar>
+   </children>
+</AnchorPane>

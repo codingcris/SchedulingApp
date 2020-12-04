@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.LogIn">
+   <center>
+      <VBox maxWidth="400.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="windowHeader" text="Log In">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="usernameLabel" text="Username" />
+            <TextField fx:id="username">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </TextField>
+            <Label fx:id="passwordLabel" text="Password" />
+            <PasswordField fx:id="password">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </PasswordField>
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="logInBttn" mnemonicParsing="false" onAction="#login" text="Log In" />
+               </children>
+            </HBox>
+            <VBox fx:id="notifications">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets top="25.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <bottom>
+      <Label fx:id="userLocation" text="Label" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="50.0" fitWidth="200.0" layoutX="110.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="125.0" AnchorPane.topAnchor="20.0">
+               <image>
+                  <Image url="@event.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D width="100.0" />
+               </viewport>
+            </ImageView>
+            <Label fx:id="title" layoutX="212.0" layoutY="37.0" text="Scheduling App" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="185.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>
