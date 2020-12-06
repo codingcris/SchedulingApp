@@ -127,8 +127,13 @@ public class Home {
         customerWindow.setScene(scene);
         customerWindow.initModality(Modality.APPLICATION_MODAL);
 
-        if (customerId != null)
+        if (customerId != null){
             controller.setCustomer(customerId);
+            controller.setOperation(CustomerOperation.Opertions.MODIFY);
+        } else {
+            controller.setOperation(CustomerOperation.Opertions.ADD);
+        }
+
 
         customerWindow.showAndWait();
 

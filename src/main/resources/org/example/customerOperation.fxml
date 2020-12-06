@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="51.0" layoutY="81.0" text="Customer" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -111,7 +111,7 @@
       <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="60.0">
         <buttons>
           <Button fx:id="cancel" mnemonicParsing="false" text="Cancel" />
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#addCustomer" text="Save" />
+            <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
         </buttons>
       </ButtonBar>
    </children>

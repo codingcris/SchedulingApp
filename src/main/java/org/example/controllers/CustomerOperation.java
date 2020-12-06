@@ -13,11 +13,16 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class CustomerOperation {
+    public static enum Opertions {
+        ADD, MODIFY
+    }
+
     private CustomerDao customerDb;
     private Customer customer;
     private Map<Integer, String> countries;
     private Map<Integer, String> firstLevelDivs;
     private final ArrayList<Integer> firstLevelDivOptionsForCountry = new ArrayList<>();
+    private Opertions operation;
 
     @FXML
     private TextField idField, nameField, phoneField, addressField, postalCodeField;
@@ -89,6 +94,28 @@ public class CustomerOperation {
                 nameField.setText(s);
             }
         }));
+
+        if(getOperation() == Opertions.ADD) {
+            saveButton.setOnAction((e) -> addCustomer());
+        } else if (getOperation() == Opertions.MODIFY) {
+            saveButton.setOnAction((e) -> modifyCustomer());
+        }
+    }
+
+    private void modifyCustomer() {
+        clearFieldsNotifications();
+        if (validFields()) {
+            customerDb.updateCustomer(getCustomer());
+            ((Stage) saveButton.getScene().getWindow()).close();
+        }
+    }
+
+    public void setOperation(Opertions op) {
+        operation = op;
+    }
+
+    public Opertions getOperation() {
+        return operation;
     }
 
     public void setCustomer(int customerId) {
