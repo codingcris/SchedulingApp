@@ -229,9 +229,34 @@ public final class CustomerDaoImpl implements CustomerDao {
 
         return countries;
     }
+    @Override
+    public Map<Integer, String> getFirstLevelDivisions() {
+        Connection conn = null;
+        HashMap<Integer, String> firstLevelDivs = new HashMap<>();
+
+        try {
+            conn = dataSource.getConnection();
+
+            try(PreparedStatement stmnt = conn.prepareStatement("SELECT Division, Division_ID FROM first_level_divisions")) {
+                ResultSet r = stmnt.executeQuery();
+
+                while (r.next()) {
+                    firstLevelDivs.put(r.getInt(2), r.getString(1));
+                }
+            }
+
+        } catch (SQLException | ConnectionPool.ConnectionsUnavailableException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            dataSource.releaseConnection(conn);
+        }
+
+        return firstLevelDivs;
+    }
+
 
     @Override
-    public Map<Integer, String> getFirstLevelDivisions(int countryId) {
+    public Map<Integer, String> getFirstLevelDivisionsByCountry(int countryId) {
         Connection conn = null;
         HashMap<Integer, String> firstLevelDivs = new HashMap<>();
 
@@ -255,6 +280,18 @@ public final class CustomerDaoImpl implements CustomerDao {
         }
 
         return firstLevelDivs;
+    }
+
+    public Integer getCountryIdFromFirstDivisionId(int firstDivId) {
+        Connection conn = null;
+
+        try {
+            conn = dataSource.getConnection();
+        } catch (ConnectionPool.ConnectionsUnavailableException e) {
+            e.printStackTrace();
+        } finally {
+
+        }
     }
 
     /**
@@ -281,6 +318,4 @@ public final class CustomerDaoImpl implements CustomerDao {
 
         return customers;
     }
-
-
 }

@@ -13,5 +13,7 @@ public interface CustomerDao {
     void deleteCustomer(int customerID);
     void addCustomer(Customer customer);
     Map<Integer, String> getCountriesOfBusiness();
-    Map<Integer, String> getFirstLevelDivisions(int countryId);
+    Map<Integer, String> getFirstLevelDivisions();
+    Map<Integer, String> getFirstLevelDivisionsByCountry(int countryId);
+
 }

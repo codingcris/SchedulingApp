@@ -10,6 +10,7 @@ public class Customer {
     private String phone;
     private int id;
     private int divisionId;
+    private String firstLevelDiv;
 
     /**
      * Constructor initializes all fields in the Customer instance.

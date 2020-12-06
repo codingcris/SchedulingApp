@@ -5,5 +5,6 @@ module org.example {
     requires java.sql;
 
     opens org.example.controllers to javafx.fxml;
+    opens org.example.application.customer to javafx.base;
     exports org.example;
 }

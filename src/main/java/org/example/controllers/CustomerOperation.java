@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.example.application.customer.Customer;
 import org.example.application.customer.CustomerDao;
@@ -13,12 +14,13 @@ import java.util.Map;
 
 public class CustomerOperation {
     private CustomerDao customerDb;
+    private Customer customer;
     private Map<Integer, String> countries;
     private Map<Integer, String> firstLevelDivs;
     private final ArrayList<Integer> firstLevelDivOptionsForCountry = new ArrayList<>();
 
     @FXML
-    private TextField idField, nameField, phoneField, addressField, addressField2, postalCodeField;
+    private TextField idField, nameField, phoneField, addressField, postalCodeField;
     @FXML
     private ComboBox countryComboBox;
     @FXML
@@ -41,8 +43,7 @@ public class CustomerOperation {
 
         setFieldAcceptableLength(nameField, MAX_NAME_LENGTH);
         setFieldAcceptableLength(phoneField, MAX_PHONE_LENGTH);
-        setFieldAcceptableLength(addressField, MAX_ADDRESS_LENGTH / 2);
-        setFieldAcceptableLength(addressField2, MAX_ADDRESS_LENGTH / 2);
+        setFieldAcceptableLength(addressField, MAX_ADDRESS_LENGTH);
         setFieldAcceptableLength(postalCodeField, MAX_POSTAL_CODE_LENGTH);
 
         setNumericOnly(phoneField, postalCodeField);
@@ -90,10 +91,23 @@ public class CustomerOperation {
         }));
     }
 
+    public void setCustomer(int customerId) {
+        customer = customerDb.getCustomer(customerId);
+
+        idField.setText("" + customer.getId());
+        nameField.setText(customer.getName());
+        phoneField.setText(customer.getPhone());
+        addressField.setText(customer.getAddress());
+        postalCodeField.setText(customer.getPostalCode());
+        firstDivisionComboBox.getSelectionModel().select(Integer.valueOf(customer.getDivisionId()));
+        countryComboBox.getSelectionModel().select(Integer.valueOf());
+
+    }
+
     private void setNumericOnly(TextField ... fields) {
         for (TextField field : fields) {
             field.textProperty().addListener(((observableValue, s, t1) -> {
-                if(t1.matches("[^0-9]+"))
+                if(t1.matches(".\\D."))
                     field.setText(s);
             }));
         }
@@ -113,7 +127,7 @@ public class CustomerOperation {
     private void updateFirstDivisions(Integer countryId) {
         firstDivisionComboBox.setValue(null);
         firstLevelDivOptionsForCountry.clear();
-        firstLevelDivs = customerDb.getFirstLevelDivisions(countryId);
+        firstLevelDivs = customerDb.getFirstLevelDivisionsByCountry(countryId);
 
         if(!firstLevelDivs.isEmpty()) {
             firstLevelDivOptionsForCountry.addAll(firstLevelDivs.keySet());
@@ -141,13 +155,13 @@ public class CustomerOperation {
         if (id != null) {
             return new Customer(id.intValue(),
                                 nameField.getText(),
-                                String.join(" ", new String[]{addressField.getText(), addressField2.getText()}),
+                                String.join(" ", addressField.getText()),
                                 postalCodeField.getText(),
                                 phoneField.getText(),
                                 (int) firstDivisionComboBox.getValue());
         } else {
             return new Customer(nameField.getText(),
-                                String.join(" ", new String[]{addressField.getText(), addressField2.getText()}),
+                                String.join(" ",addressField.getText()),
                                 postalCodeField.getText(),
                                 phoneField.getText(),
                                 (int) firstDivisionComboBox.getValue());
@@ -159,6 +173,7 @@ public class CustomerOperation {
         clearFieldsNotifications();
         if (validFields())
             customerDb.addCustomer(getCustomer());
+        ((Stage) saveButton.getScene().getWindow()).close();
     }
 
     private void clearFieldsNotifications() {
