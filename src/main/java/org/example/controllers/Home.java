@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.example.App;
 import org.example.application.customer.Customer;
 import org.example.application.db.ConnectionPool;
 import org.example.application.customer.CustomerDaoImpl;
@@ -19,8 +20,11 @@ import org.example.application.customer.CustomerDaoImpl;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class Home {
+    private final ResourceBundle resources = ResourceBundle.getBundle("org.example.bundles.HomeWindowResources");
     private final String dbUrl = "jdbc:mysql://wgudb.ucertify.com/WJ07mxm";
     private final String dbUsername = "U07mxm";
     private final String dbPassword = "53689073251";
@@ -32,9 +36,16 @@ public class Home {
     private Map<Integer, String> firstLevelDivs;
 
     @FXML
-    private TableView customersTable;
+    private Label title;
+
     @FXML
-    private Button modifyBttn, deleteBttn;
+    private Tab customersTab, appointmentsTab;
+
+    @FXML
+    private TableView customersTable;
+
+    @FXML
+    private Button addButton, modifyButton, deleteButton;
 
     /**
      * Controller initialization method.
@@ -58,22 +69,33 @@ public class Home {
         initializeCustomersTableColumns();
         customersTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         customersTable.getSelectionModel().selectedItemProperty().addListener(((observableValue, o, t1) -> {
-                modifyBttn.setDisable(t1 == null);
-                deleteBttn.setDisable(t1 == null);
+                modifyButton.setDisable(t1 == null);
+                deleteButton.setDisable(t1 == null);
         }));
 
+        applyResources();
+
+    }
+
+    private void applyResources() {
+        title.setText(App.resources.getString("appTitle"));
+        customersTab.setText(resources.getString("customers"));
+        appointmentsTab.setText(resources.getString("appointments"));
+        modifyButton.setText(resources.getString("modify"));
+        deleteButton.setText(resources.getString("delete"));
+        addButton.setText(resources.getString("add"));
     }
 
     /**
      * Initializes the columns of the customersTable TableView and their values.
      */
     private void initializeCustomersTableColumns() {
-        TableColumn<Customer, Integer> idColumn = new TableColumn<>("ID");
-        TableColumn<Customer, String> nameColumn = new TableColumn<>("Name");
-        TableColumn<Customer, String> phoneColumn = new TableColumn<>("Phone");
-        TableColumn<Customer, String> addressColumn = new TableColumn<>("Address");
-        TableColumn<Customer, String> postalColumn = new TableColumn<>("Postal Code");
-        TableColumn<Customer, String> firstLevelDivColumn = new TableColumn<>("State/Province");
+        TableColumn<Customer, Integer> idColumn = new TableColumn<>(resources.getString("id"));
+        TableColumn<Customer, String> nameColumn = new TableColumn<>(resources.getString("name"));
+        TableColumn<Customer, String> phoneColumn = new TableColumn<>(resources.getString("phoneNumber"));
+        TableColumn<Customer, String> addressColumn = new TableColumn<>(resources.getString("address"));
+        TableColumn<Customer, String> postalColumn = new TableColumn<>(resources.getString("postalCode"));
+        TableColumn<Customer, String> firstLevelDivColumn = new TableColumn<>(resources.getString("state"));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
@@ -95,16 +117,39 @@ public class Home {
      * Opens the add customer window.
      * @throws IOException Will throw IOException if customerOperation.fxml resource is not available.
      */
-    public void addCustomer() throws IOException {
+    public void addCustomer(){
         customerOperation(null);
         updateCustomersTable();
     }
 
     @FXML
-    public void modifyCustomer() throws IOException {
+    public void modifyCustomer(){
         Customer selectedCustomer = (Customer) customersTable.getSelectionModel().getSelectedItem();
         customerOperation(selectedCustomer.getId());
         updateCustomersTable();
+    }
+
+    @FXML
+    public void deleteCustomer() {
+        Customer selectedCustomer = (Customer) customersTable.getSelectionModel().getSelectedItem();
+        if (confirmDelete()) {
+            customerDao.deleteCustomer(selectedCustomer.getId());
+        }
+        updateCustomersTable();
+    }
+
+    private Boolean confirmDelete() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(resources.getString("delete") + " " + resources.getString("customer").toLowerCase());
+        alert.setHeaderText(resources.getString("deleteCustomerNotification"));
+        alert.setContentText(resources.getString("confirmationQuestion"));
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void customerOperation(Integer customerId) {
@@ -112,9 +157,7 @@ public class Home {
 
         CustomerOperation controller = new CustomerOperation();
         controller.setCustomerDb(customerDao);
-
         loader.setController(controller);
-
         Parent root = null;
         try {
             root = loader.load();
@@ -122,19 +165,17 @@ public class Home {
             e.printStackTrace();
         }
 
+        if (customerId != null){
+            controller.setOperation(CustomerOperation.Operations.MODIFY);
+            controller.setCustomer(customerId);
+        } else {
+            controller.setOperation(CustomerOperation.Operations.ADD);
+        }
+
         Scene scene = new Scene(root);
         Stage customerWindow = new Stage();
         customerWindow.setScene(scene);
         customerWindow.initModality(Modality.APPLICATION_MODAL);
-
-        if (customerId != null){
-            controller.setCustomer(customerId);
-            controller.setOperation(CustomerOperation.Opertions.MODIFY);
-        } else {
-            controller.setOperation(CustomerOperation.Opertions.ADD);
-        }
-
-
         customerWindow.showAndWait();
 
     }

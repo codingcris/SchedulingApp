@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.Home">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.Home">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Customers">
+          <Tab fx:id="customersTab" text="Customers">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
@@ -19,7 +31,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Appointments">
+          <Tab fx:id="appointmentsTab" text="Appointments">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -68,9 +80,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-          <Button fx:id="addBtn" mnemonicParsing="false" onAction="#addCustomer" text="Add" />
-            <Button fx:id="deleteBttn" disable="true" mnemonicParsing="false" text="Delete" GridPane.columnIndex="2" />
-            <Button fx:id="modifyBttn" disable="true" mnemonicParsing="false" onAction="#modifyCustomer" text="Modify" GridPane.columnIndex="1" />
+          <Button fx:id="addButton" mnemonicParsing="false" onAction="#addCustomer" text="Add" />
+            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#deleteCustomer" text="Delete" GridPane.columnIndex="2" />
+            <Button fx:id="modifyButton" disable="true" mnemonicParsing="false" onAction="#modifyCustomer" text="Modify" GridPane.columnIndex="1" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />
@@ -80,4 +92,7 @@
          </BorderPane.margin>
       </GridPane>
    </bottom>
+   <left>
+      <VBox fx:id="upcomingAppointments" BorderPane.alignment="CENTER" />
+   </left>
 </BorderPane>

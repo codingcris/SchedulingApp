@@ -99,7 +99,7 @@ public final class CustomerDaoImpl implements CustomerDao {
         int customerID = updatedCustomer.getId();
 
         final String queryString = "UPDATE customers SET " +
-                                    String.join(System.getProperty(""),
+                                    String.join("",
                                        "Customer_ID=?, ",
                                                 "Customer_Name=?, ",
                                                 "Address=?, ",

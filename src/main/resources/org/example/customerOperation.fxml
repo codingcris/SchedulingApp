@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="51.0" layoutY="81.0" text="Customer" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Label fx:id="operationLabel" layoutX="51.0" layoutY="81.0" text="Customer" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -30,7 +30,7 @@
                <children>
                   <VBox GridPane.rowIndex="3">
                      <children>
-                        <Label text="Name" />
+                        <Label fx:id="nameLabel" text="Name" />
                         <TextField fx:id="nameField" maxWidth="-Infinity" prefWidth="200.0">
                            <VBox.margin>
                               <Insets />
@@ -43,7 +43,7 @@
                   </VBox>
                   <VBox GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                      <children>
-                        <Label text="Phone Number" />
+                        <Label fx:id="phoneLabel" text="Phone Number" />
                         <TextField fx:id="phoneField" maxWidth="-Infinity" prefWidth="200.0">
                            <VBox.margin>
                               <Insets />
@@ -56,7 +56,7 @@
                   </VBox>
                   <VBox GridPane.rowIndex="4">
                      <children>
-                        <Label text="Address" />
+                        <Label fx:id="addressLabel" text="Address" />
                         <TextField fx:id="addressField" />
                      </children>
                      <GridPane.margin>
@@ -65,7 +65,7 @@
                   </VBox>
                   <VBox>
                      <children>
-                        <Label text="ID" />
+                        <Label fx:id="idLabel" text="ID" />
                         <TextField fx:id="idField" disable="true" editable="false" maxWidth="200.0" text="AUTO GENERATED">
                            <VBox.margin>
                               <Insets bottom="20.0" />
@@ -75,7 +75,7 @@
                   </VBox>
                   <VBox GridPane.rowIndex="5" GridPane.vgrow="SOMETIMES">
                      <children>
-                        <Label text="Country" />
+                        <Label fx:id="countryLabel" text="Country" />
                         <ComboBox fx:id="countryComboBox" prefWidth="150.0">
                            <VBox.margin>
                               <Insets bottom="20.0" />
@@ -85,7 +85,7 @@
                   </VBox>
                   <VBox GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <children>
-                        <Label text="State" />
+                        <Label fx:id="stateLabel" text="State" />
                         <ComboBox fx:id="firstDivisionComboBox" disable="true" prefWidth="150.0" />
                      </children>
                      <padding>
@@ -94,7 +94,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" fillWidth="false" prefWidth="151.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                      <children>
-                        <Label text="Postal Code" />
+                        <Label fx:id="postalCodeLabel" text="Postal Code" />
                         <TextField fx:id="postalCodeField" alignment="TOP_LEFT" maxWidth="150.0" />
                      </children>
                      <GridPane.margin>
@@ -110,7 +110,7 @@
       </HBox>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="60.0">
         <buttons>
-          <Button fx:id="cancel" mnemonicParsing="false" text="Cancel" />
+          <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelOperation" text="Cancel" />
             <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
         </buttons>
       </ButtonBar>

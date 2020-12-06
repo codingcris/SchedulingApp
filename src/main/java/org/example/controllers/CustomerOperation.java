@@ -11,27 +11,32 @@ import org.example.application.customer.CustomerDao;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class CustomerOperation {
-    public static enum Opertions {
+    public static enum Operations {
         ADD, MODIFY
     }
 
     private CustomerDao customerDb;
     private Customer customer;
+    private ResourceBundle resources = ResourceBundle.getBundle("org.example.bundles.CustomerOperationResources");
     private Map<Integer, String> countries;
     private Map<Integer, String> firstLevelDivs;
     private final ArrayList<Integer> firstLevelDivOptionsForCountry = new ArrayList<>();
-    private Opertions operation;
+    private Operations operation;
 
     @FXML
     private TextField idField, nameField, phoneField, addressField, postalCodeField;
+    @FXML
+    private Label operationLabel, idLabel, nameLabel, phoneLabel, addressLabel, postalCodeLabel, countryLabel, stateLabel;
     @FXML
     private ComboBox countryComboBox;
     @FXML
     private ComboBox firstDivisionComboBox;
     @FXML
-    private Button saveButton;
+    private Button saveButton, cancelButton;
 
     private TextField[] fields;
 
@@ -94,11 +99,25 @@ public class CustomerOperation {
                 nameField.setText(s);
             }
         }));
+    }
 
-        if(getOperation() == Opertions.ADD) {
-            saveButton.setOnAction((e) -> addCustomer());
-        } else if (getOperation() == Opertions.MODIFY) {
-            saveButton.setOnAction((e) -> modifyCustomer());
+    public void cancelOperation() {
+        if(confirmCancel()) {
+            ((Stage) saveButton.getScene().getWindow()).close();
+        }
+    }
+
+    private boolean confirmCancel() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(resources.getString("cancel"));
+        alert.setHeaderText(resources.getString("dataLostNotification"));
+        alert.setContentText(resources.getString("confirmationQuestion"));
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -110,11 +129,37 @@ public class CustomerOperation {
         }
     }
 
-    public void setOperation(Opertions op) {
+    public void setOperation(Operations op) {
         operation = op;
+
+        if(op == Operations.ADD) {
+            saveButton.setOnAction((e) -> addCustomer());
+        } else if (op == Operations.MODIFY) {
+            saveButton.setOnAction((e) -> modifyCustomer());
+        }
+
+        applyResources();
     }
 
-    public Opertions getOperation() {
+    private void applyResources() {
+        switch (operation) {
+            case ADD: operationLabel.setText(resources.getString("addCustomer"));
+                      break;
+            case MODIFY: operationLabel.setText(resources.getString("modifyCustomer"));
+                         break;
+        }
+
+        idLabel.setText(resources.getString("id"));
+        nameLabel.setText(resources.getString("name"));
+        phoneLabel.setText(resources.getString("phoneNumber"));
+        addressLabel.setText(resources.getString("address"));
+        countryLabel.setText(resources.getString("country"));
+        stateLabel.setText(resources.getString("state"));
+        saveButton.setText(resources.getString("save"));
+        cancelButton.setText(resources.getString("cancel"));
+    }
+
+    public Operations getOperation() {
         return operation;
     }
 

@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
  * JavaFX App
  */
 public class App extends Application {
-    public static ResourceBundle resources = ResourceBundle.getBundle("org.example.bundles.AppResources", Locale.getDefault());
+    public static ResourceBundle resources;
     private static Scene scene;
 
     @Override
@@ -31,6 +31,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        Locale.setDefault(Locale.FRENCH);
+        resources = ResourceBundle.getBundle("org.example.bundles.AppResources", Locale.getDefault());
         launch();
     }
 
