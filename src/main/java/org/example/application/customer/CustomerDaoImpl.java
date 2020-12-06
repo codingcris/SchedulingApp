@@ -282,16 +282,30 @@ public final class CustomerDaoImpl implements CustomerDao {
         return firstLevelDivs;
     }
 
+    @Override
     public Integer getCountryIdFromFirstDivisionId(int firstDivId) {
         Connection conn = null;
+        String queryString = "SELECT Country_ID FROM first_level_divisions WHERE Division_ID=?";
 
         try {
             conn = dataSource.getConnection();
-        } catch (ConnectionPool.ConnectionsUnavailableException e) {
+            try (PreparedStatement stmt = conn.prepareStatement(queryString)){
+                stmt.setInt(1, firstDivId);
+
+                ResultSet r = stmt.executeQuery();
+
+                if (r.next()) {
+                    return r.getInt(1);
+                }
+            }
+        } catch (ConnectionPool.ConnectionsUnavailableException | SQLException e) {
             e.printStackTrace();
         } finally {
-
+            if (conn != null)
+                dataSource.releaseConnection(conn);
         }
+
+        return null;
     }
 
     /**

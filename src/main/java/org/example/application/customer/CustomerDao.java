@@ -15,5 +15,5 @@ public interface CustomerDao {
     Map<Integer, String> getCountriesOfBusiness();
     Map<Integer, String> getFirstLevelDivisions();
     Map<Integer, String> getFirstLevelDivisionsByCountry(int countryId);
-
+    Integer getCountryIdFromFirstDivisionId(int firstDivId);
 }

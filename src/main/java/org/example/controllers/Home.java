@@ -90,6 +90,7 @@ public class Home {
         customersTable.getColumns().addAll(idColumn, nameColumn, phoneColumn, addressColumn,  postalColumn, firstLevelDivColumn);
     }
 
+    @FXML
     /**
      * Opens the add customer window.
      * @throws IOException Will throw IOException if customerOperation.fxml resource is not available.
@@ -99,9 +100,11 @@ public class Home {
         updateCustomersTable();
     }
 
-    public void updateCustomer() throws IOException {
+    @FXML
+    public void modifyCustomer() throws IOException {
         Customer selectedCustomer = (Customer) customersTable.getSelectionModel().getSelectedItem();
         customerOperation(selectedCustomer.getId());
+        updateCustomersTable();
     }
 
     private void customerOperation(Integer customerId) {

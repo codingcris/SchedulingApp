@@ -99,15 +99,15 @@ public class CustomerOperation {
         phoneField.setText(customer.getPhone());
         addressField.setText(customer.getAddress());
         postalCodeField.setText(customer.getPostalCode());
+        countryComboBox.getSelectionModel().select(customerDb.getCountryIdFromFirstDivisionId(customer.getDivisionId()));
         firstDivisionComboBox.getSelectionModel().select(Integer.valueOf(customer.getDivisionId()));
-        countryComboBox.getSelectionModel().select(Integer.valueOf());
 
     }
 
     private void setNumericOnly(TextField ... fields) {
         for (TextField field : fields) {
             field.textProperty().addListener(((observableValue, s, t1) -> {
-                if(t1.matches(".\\D."))
+                if(t1.matches(".*\\D.*"))
                     field.setText(s);
             }));
         }
@@ -171,9 +171,10 @@ public class CustomerOperation {
     @FXML
     public void addCustomer(){
         clearFieldsNotifications();
-        if (validFields())
+        if (validFields()) {
             customerDb.addCustomer(getCustomer());
-        ((Stage) saveButton.getScene().getWindow()).close();
+            ((Stage) saveButton.getScene().getWindow()).close();
+        }
     }
 
     private void clearFieldsNotifications() {
