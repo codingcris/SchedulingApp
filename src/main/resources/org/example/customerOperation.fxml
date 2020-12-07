@@ -12,9 +12,15 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="60.0">
+        <buttons>
+          <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+        </buttons>
+      </ButtonBar>
+      <VBox fx:id="notificationsArea" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane maxHeight="-Infinity" HBox.hgrow="ALWAYS">
+            <GridPane maxHeight="-Infinity">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -102,17 +108,11 @@
                      </GridPane.margin>
                   </VBox>
                </children>
-               <HBox.margin>
-                  <Insets left="40.0" right="40.0" />
-               </HBox.margin>
             </GridPane>
          </children>
-      </HBox>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="60.0">
-        <buttons>
-          <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelOperation" text="Cancel" />
-            <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
-        </buttons>
-      </ButtonBar>
+         <padding>
+            <Insets left="40.0" />
+         </padding>
+      </VBox>
    </children>
 </AnchorPane>

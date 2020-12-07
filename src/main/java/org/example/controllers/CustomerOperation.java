@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,6 +38,8 @@ public class CustomerOperation {
     private ComboBox firstDivisionComboBox;
     @FXML
     private Button saveButton, cancelButton;
+    @FXML
+    private VBox notificationsArea;
 
     private TextField[] fields;
 
@@ -99,6 +102,8 @@ public class CustomerOperation {
                 nameField.setText(s);
             }
         }));
+
+        cancelButton.setOnAction(e -> cancelOperation());
     }
 
     public void cancelOperation() {
@@ -122,7 +127,7 @@ public class CustomerOperation {
     }
 
     private void modifyCustomer() {
-        clearFieldsNotifications();
+        clearNotifications();
         if (validFields()) {
             customerDb.updateCustomer(getCustomer());
             ((Stage) saveButton.getScene().getWindow()).close();
@@ -242,68 +247,59 @@ public class CustomerOperation {
 
     @FXML
     public void addCustomer(){
-        clearFieldsNotifications();
+        clearNotifications();
         if (validFields()) {
             customerDb.addCustomer(getCustomer());
             ((Stage) saveButton.getScene().getWindow()).close();
         }
     }
 
-    private void clearFieldsNotifications() {
-        for(TextField field : fields) {
-            VBox parent = (VBox) field.getParent();
-            var children = parent.getChildren();
-            if(children.get(children.size() - 1) instanceof Label) {
-                children.removeIf(n -> n.getId() == "notification");
-            }
-        }
+    private void clearNotifications() {
+        notificationsArea.getChildren().removeIf(node -> node.getId() == "notification");
     }
 
     public boolean validFields() {
-        boolean emptyTextField = false;
-        boolean emptyComboBox = false;
+        boolean emptyField = false;
 
         for(TextField field : fields) {
             if(field.getText().trim().isEmpty()) {
-                displayBlankFieldError(field);
-                emptyTextField = true;
+                highlightEmptyField(field);
+                emptyField = true;
             }
         }
 
 
         if(countryComboBox.getValue() == null) {
-            highlightUnselectedBox(countryComboBox);
-            emptyComboBox = true;
+            highlightEmptyField(countryComboBox);
+            emptyField = true;
         } else {
             countryComboBox.setStyle(null);
         }
 
         if(firstDivisionComboBox.getValue() == null) {
-            highlightUnselectedBox(firstDivisionComboBox);
-            emptyComboBox = true;
+            highlightEmptyField(firstDivisionComboBox);
+            emptyField = true;
         } else {
             firstDivisionComboBox.setStyle(null);
         }
 
-        if(emptyTextField || emptyComboBox)
-            return false;
+        if (emptyField)
+            displayBlankFieldError();
 
-        return true;
+        return emptyField;
     }
 
-    private void highlightUnselectedBox(ComboBox comboBox) {
-        comboBox.setStyle("-fx-border-color: red;");
+    private void highlightEmptyField(Node field) {
+        field.setStyle("-fx-border-color: red;");
     }
 
-    private void displayBlankFieldError(TextField field){
+    private void displayBlankFieldError(){
         final Label notification = new Label("Text field can not be empty");
         notification.setWrapText(true);
         notification.setStyle("-fx-background-color: rgba(255, 0 , 0, 0.5);");
         notification.setId("notification");
 
 
-        VBox parent = (VBox) field.getParent();
-        parent.getChildren().add(notification);
-        notification.setPrefWidth(field.getWidth());
+        notificationsArea.getChildren().add(notification);
     }
 }
