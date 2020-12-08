@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -25,6 +26,7 @@ public class AppointmentOperation {
 
     private ResourceBundle resources;
     private AppointmentDaoImpl appointmentsDb;
+    private TextField[] fields;
 
     @FXML
     private HBox startTimePicker, endTimePicker;
@@ -42,6 +44,8 @@ public class AppointmentOperation {
 
     @FXML
     public void initialize() {
+        fields = new TextField[]{customerIdField, userIdField, titleField, descriptionField, locationField, typeField};
+
         setupTimePickers();
 
         startTimePeriod = new ToggleGroup();
@@ -143,32 +147,77 @@ public class AppointmentOperation {
         }
     }
 
-    private Appointment getAppointment() {
-        Integer id = null;
-        String title, description, location, type,
-
-        try {
-            id = Integer.parseInt(idField.getText() ,10);
-        } catch (NumberFormatException e) {}
-
-        if (id != null) {
-            return new Appointment(id, );
-        } else {
-            return new Appointment();
-        }
-    }
+//    private Appointment getAppointment() {
+//        Integer id = null;
+//        String title, description, location, type,
+//
+//        try {
+//            id = Integer.parseInt(idField.getText() ,10);
+//        } catch (NumberFormatException e) {}
+//
+//        if (id != null) {
+//            return new Appointment(id, );
+//        } else {
+//            return new Appointment();
+//        }
+//    }
 
     @FXML
     public void addAppointment(){
         clearNotifications();
         if (validFields()) {
-            appointmentsDb.addAppointment(getAppointment());
+//            appointmentsDb.addAppointment(getAppointment());
             ((Stage) saveButton.getScene().getWindow()).close();
         }
     }
 
     private boolean validFields() {
-        return false;
+        boolean emptyField = false;
+
+        for(TextField field : fields) {
+            if(field.getText().trim().isEmpty()) {
+                highlightEmptyField(field);
+                emptyField = true;
+            } else {
+                field.setStyle(null);
+            }
+        }
+
+
+        if (contactId.getValue() == null) {
+            highlightEmptyField(contactId);
+            emptyField = true;
+        } else {
+            contactId.setStyle(null);
+        }
+
+        if (startDateField.getValue() == null) {
+            highlightEmptyField(startDateField);
+            emptyField = true;
+        } else {
+            startDateField.setStyle(null);
+        }
+
+        if (endDateField.getValue() == null) {
+            highlightEmptyField(endDateField);
+            emptyField = true;
+        } else {
+            endDateField.setStyle(null);
+        }
+
+
+        if (emptyField)
+            displayBlankFieldError();
+
+        return !emptyField;
+    }
+
+
+    private void displayBlankFieldError() {
+    }
+
+    private void highlightEmptyField(Node field) {
+        field.setStyle("-fx-border-color: red");
     }
 
     private void clearNotifications() {
