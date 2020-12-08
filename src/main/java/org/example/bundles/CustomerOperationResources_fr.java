@@ -16,7 +16,8 @@ public class CustomerOperationResources_fr extends ListResourceBundle {
             {"save","Enregister"},
             {"cancel", "Annuler"},
             {"dataLostNotification", "Toutes les données des champs de texte seront perdues"},
-            {"confirmationQuestion", "Êtes-vous d'accord avec ça?"}
+            {"confirmationQuestion", "Êtes-vous d'accord avec ça?"},
+            {"noEmptyFields", "Veuillez remplir tous les champs vides."}
     };
 
     @Override

@@ -31,7 +31,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        Locale.setDefault(Locale.FRENCH);
         resources = ResourceBundle.getBundle("org.example.bundles.AppResources", Locale.getDefault());
         launch();
     }

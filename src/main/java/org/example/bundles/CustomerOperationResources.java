@@ -15,8 +15,9 @@ public class CustomerOperationResources extends ListResourceBundle {
             {"state", "State"},
             {"save", "Save"},
             {"cancel", "Cancel"},
-            {"dataLostNotification", "All data in text fields will be lost."},
-            {"confirmationQuestion", "Are you OK with this?"}
+            {"dataLostNotification", "All unsaved data in text fields will be lost."},
+            {"confirmationQuestion", "Are you OK with this?"},
+            {"noEmptyFields", "Please fill out all empty fields."}
     };
 
     @Override

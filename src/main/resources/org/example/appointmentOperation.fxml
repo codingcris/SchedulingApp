@@ -1,14 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.controllers.AppointmentOperation"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" layoutX="169.0" layoutY="92.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane hgap="20.0" vgap="25.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox GridPane.rowIndex="2">
+                     <children>
+                        <Label text="Type" />
+                        <TextField fx:id="typeField" />
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label text="Start Time" />
+                              <HBox fx:id="startTimePicker" spacing="10.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <RadioButton mnemonicParsing="false" text="A.M.">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="startTimePeriod" />
+                                 </toggleGroup></RadioButton>
+                              <RadioButton mnemonicParsing="false" text="P.M." toggleGroup="$startTimePeriod" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <VBox GridPane.rowIndex="3">
+                     <children>
+                        <Label text="Location" />
+                        <TextField fx:id="locationField" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                     <children>
+                        <Label text="Title" />
+                        <TextField fx:id="titleField" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox GridPane.rowIndex="4">
+                     <children>
+                        <Label text="Start Date" />
+                        <DatePicker fx:id="startDateField" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <Label text="Contact" />
+                        <ComboBox fx:id="contactField" prefWidth="150.0" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                     <children>
+                        <Label text="Description" />
+                        <TextField fx:id="descriptionField" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="5">
+                     <children>
+                        <Label text="End Date" />
+                        <DatePicker />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </VBox>
+                  <GridPane hgap="20.0" GridPane.columnSpan="2147483647">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" percentWidth="1.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox GridPane.columnIndex="2">
+                           <children>
+                              <Label text="User ID" />
+                              <TextField fx:id="userIdField" />
+                           </children>
+                        </VBox>
+                        <VBox GridPane.columnIndex="1">
+                           <children>
+                              <Label text="Customer ID" />
+                              <TextField fx:id="customerIdField" />
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label text="Appointment ID" />
+                              <TextField fx:id="idField" maxWidth="100.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label text="End Time" />
+                              <HBox fx:id="endTimePicker" spacing="10.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <RadioButton mnemonicParsing="false" text="A.M.">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="endTimePeriod" />
+                                 </toggleGroup></RadioButton>
+                              <RadioButton mnemonicParsing="false" text="P.M." toggleGroup="$endTimePeriod" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+      <Label text="Appointment" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0">
+        <buttons>
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelOperation" text="Cancel" />
+          <Button mnemonicParsing="false" text="Save" />
+        </buttons>
+      </ButtonBar>
+   </children>
 </AnchorPane>

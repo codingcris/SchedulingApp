@@ -16,6 +16,29 @@ public class Appointment {
     private LocalDateTime start;
     private LocalDateTime end;
 
+    public Appointment(int customerId, int userId, int contactId, String title, String description, String location, String type,
+                       LocalDateTime start, LocalDateTime end) {
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+    }
+    public Appointment(int appointmentId, int customerId, int userId, int contactId, String title, String description, String location, String type,
+                       LocalDateTime start, LocalDateTime end) {
+        this(customerId, userId, contactId, title, description, location, type, start, end);
+
+        this.setId(appointmentId);
+    }
+
+    private void setId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }

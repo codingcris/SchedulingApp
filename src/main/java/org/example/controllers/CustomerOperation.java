@@ -265,6 +265,8 @@ public class CustomerOperation {
             if(field.getText().trim().isEmpty()) {
                 highlightEmptyField(field);
                 emptyField = true;
+            } else {
+                field.setStyle(null);
             }
         }
 
@@ -286,7 +288,7 @@ public class CustomerOperation {
         if (emptyField)
             displayBlankFieldError();
 
-        return emptyField;
+        return !emptyField;
     }
 
     private void highlightEmptyField(Node field) {
@@ -294,9 +296,10 @@ public class CustomerOperation {
     }
 
     private void displayBlankFieldError(){
-        final Label notification = new Label("Text field can not be empty");
+        final Label notification = new Label(resources.getString("noEmptyFields"));
         notification.setWrapText(true);
         notification.setStyle("-fx-background-color: rgba(255, 0 , 0, 0.5);");
+        notification.setPrefWidth(notification.getMaxWidth());
         notification.setId("notification");
 
 

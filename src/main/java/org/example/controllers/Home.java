@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.example.App;
+import org.example.application.appointment.AppointmentDaoImpl;
 import org.example.application.customer.Customer;
 import org.example.application.db.ConnectionPool;
 import org.example.application.customer.CustomerDaoImpl;
@@ -31,6 +32,8 @@ public class Home {
 
     private ConnectionPool dbConnectionPool;
     private CustomerDaoImpl customerDao;
+    private AppointmentDaoImpl appointmentDao;
+
 
     private Map<Integer, String> countries;
     private Map<Integer, String> firstLevelDivs;
@@ -38,6 +41,8 @@ public class Home {
     @FXML
     private Label title;
 
+    @FXML
+    private TabPane tabs;
     @FXML
     private Tab customersTab, appointmentsTab;
 
@@ -74,8 +79,62 @@ public class Home {
         }));
 
         applyResources();
+        updateTabs(null);
 
+        tabs.getSelectionModel().selectedItemProperty().addListener(((observableValue, tab, t1) -> {
+            updateTabs(t1);
+        }));
     }
+
+    private void updateTabs(Tab selectedTab) {
+        if (selectedTab == null || selectedTab == customersTab) {
+            addButton.setOnAction(e -> addCustomer());
+            modifyButton.setOnAction(e -> modifyCustomer());
+            deleteButton.setOnAction(e -> deleteCustomer());
+        } else if (selectedTab == appointmentsTab) {
+            addButton.setOnAction(e -> addAppointment());
+            modifyButton.setOnAction(e -> modifyAppointment());
+            deleteButton.setOnAction(e -> deleteAppointment());
+        }
+    }
+
+    private void modifyAppointment() {
+    }
+
+    private void deleteAppointment() {
+    }
+
+    private void addAppointment() {
+        appointmentOperation(null);
+    }
+
+    private void appointmentOperation(Integer appointmentId) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/appointmentOperation.fxml"));
+
+        AppointmentOperation controller = new AppointmentOperation();
+        controller.setCustomerDb(appointmentDao);
+        loader.setController(controller);
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (appointmentId != null){
+            controller.setOperation(AppointmentOperation.Operations.MODIFY);
+            controller.setAppointment(appointmentId);
+        } else {
+            controller.setOperation(AppointmentOperation.Operations.ADD);
+        }
+
+        Scene scene = new Scene(root);
+        Stage customerWindow = new Stage();
+        customerWindow.setScene(scene);
+        customerWindow.initModality(Modality.APPLICATION_MODAL);
+        customerWindow.showAndWait();
+    }
+
 
     private void applyResources() {
         title.setText(App.resources.getString("appTitle"));
