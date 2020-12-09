@@ -6,6 +6,7 @@ module org.example {
 
 
     opens org.example.controllers to javafx.fxml;
+    opens org.example.application.appointment to javafx.base;
     opens org.example.application.customer to javafx.base;
     exports org.example;
 }

@@ -1,6 +1,8 @@
 package org.example.application.appointment;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 /**
  * Represents an appointment between a customer and a company contact.
  */

@@ -18,7 +18,17 @@ public class HomeWindowResources extends ListResourceBundle {
             {"customer", "Customer"},
             {"confirmationQuestion", "Are you OK with this?"},
             {"customers", "Customers"},
-            {"appointments", "Appointments"}
+            {"appointments", "Appointments"},
+            {"title", "Title"},
+            {"description", "Description"},
+            {"type", "Type"},
+            {"location", "Location"},
+            {"startDate", "Start Date"},
+            {"startTime", "Start Time"},
+            {"endDate", "End Date"},
+            {"endTime", "End Time"},
+            {"customerId", "Customer ID"},
+            {"contact", "Contact"}
     };
 
     @Override
