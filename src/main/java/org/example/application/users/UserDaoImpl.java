@@ -1,5 +1,7 @@
 package org.example.application.users;
 
+import javafx.application.Application;
+import org.example.App;
 import org.example.application.db.ConnectionPool;
 
 import javax.swing.*;
@@ -27,7 +29,7 @@ public class UserDaoImpl implements UserDAO{
     public UserDaoImpl() throws ConnectionPool.ConnectionsUnavailableException {
         dataSource = ConnectionPool.create(dbUrl, dbUsername, dbPassword, 1);
         if (dataSource == null) {
-            throw new ConnectionPool.ConnectionsUnavailableException("Failed to establish database connections for login.");
+            throw new ConnectionPool.ConnectionsUnavailableException(App.resources.getString("databaseConnectionsError"));
         }
     }
 

@@ -1,7 +1,8 @@
 package org.example.controllers;
 
-import java.io.IOException;
+import java.io.*;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 import javafx.fxml.FXML;
@@ -18,11 +19,43 @@ import org.example.application.users.UserDaoImpl;
 import javax.swing.*;
 
 /**
- * Controller class for the application's login form.
+ * Login window controller class.
  */
 public class LogIn {
+    private class LogInLogger {
+        private final File logFile;
+
+        {
+            logFile = new File("login_activity.txt");
+        }
+
+        public LogInLogger() {
+            if (!logFile.exists()) {
+                try {
+                    logFile.createNewFile();
+                } catch (IOException e) {
+                    new Alert(Alert.AlertType.ERROR, "Logging error, if problem persists contact IT.").showAndWait();
+                    System.exit(-1);
+                }
+            }
+        }
+
+        public void writeLog(ZonedDateTime attemptTime, String username, boolean success) {
+            try (PrintWriter logger = new PrintWriter(new FileOutputStream(logFile, true))){
+                String format = "Log In Attempt: %s, Username: %s, Success: %b";
+                logger.println(String.format(format, attemptTime, username, success));
+            } catch (FileNotFoundException e) {
+                new Alert(Alert.AlertType.ERROR, "Logging error, if problem persists contact IT.").showAndWait();
+                System.exit(-1);
+            }
+        }
+
+    }
+
     private ResourceBundle resources;
     private UserDaoImpl loginClient;
+    private LogInLogger logger;
+
 
     @FXML
     private Label title;
@@ -33,13 +66,13 @@ public class LogIn {
     @FXML
     private Label usernameLabel;
     @FXML
-    private TextField username;
+    private TextField usernameField;
     @FXML
     private Label passwordLabel;
     @FXML
-    private PasswordField password;
+    private PasswordField passwordField;
     @FXML
-    private Button logInBttn;
+    private Button logInButton;
     @FXML
     private VBox notifications;
 
@@ -57,6 +90,7 @@ public class LogIn {
             System.exit(-1);
         }
 
+        logger = new LogInLogger();
 
         userLocation.setText(ZoneId.systemDefault().toString());
         notifications.setStyle("-fx-background-color: rgba(255,0,0,0.50)");
@@ -74,12 +108,7 @@ public class LogIn {
         windowHeader.setText(resources.getString("function"));
         usernameLabel.setText(resources.getString("username"));
         passwordLabel.setText(resources.getString("password"));
-        logInBttn.setText(resources.getString("function"));
-    }
-
-    private void applyResources(Locale locale) {
-        Locale.setDefault(locale);
-        applyResources();
+        logInButton.setText(resources.getString("function"));
     }
 
     /**
@@ -90,16 +119,19 @@ public class LogIn {
      */
     public void login() {
         clearNotifications();
-        String usrname = username.getText().trim();
-        char[] passwrd = password.getText().toCharArray();
+
+        String username = usernameField.getText().trim();
+        char[] password = passwordField.getText().toCharArray();
         
-        if(validLogin(usrname, passwrd)) {
+        if(validLogin(username, password)) {
+            logger.writeLog(ZonedDateTime.now(ZoneId.of("UTC")), username, true);
             welcomeHome();
         } else {
+            logger.writeLog(ZonedDateTime.now(ZoneId.of("UTC")), username, false);
             invalidLogin();
         }
 
-        passwrd = null;
+        password = null;
     }
 
     /**
@@ -119,27 +151,6 @@ public class LogIn {
     }
 
     /**
-     * Opens application home screen in a new window and closes the current window.
-     */
-    private void welcomeHome() {
-        Stage home = new Stage();
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/home.fxml"));
-            Parent root = loader.load();
-            Scene homeScene = new Scene(root);
-            home.setScene(homeScene);
-            home.setTitle(App.resources.getString("appTitle"));
-            home.show();
-            ((Stage) logInBttn.getScene().getWindow()).close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Failure opening home screen of application. Contact IT").show();
-            ((Stage) logInBttn.getScene().getWindow()).close();
-        }
-    }
-
-    /**
      * Method used for verifying username and password combinations.
      * @param username login attempt username
      * @param password login attempt password
@@ -153,5 +164,29 @@ public class LogIn {
         }
 
         return false;
+    }
+
+    /**
+     * Opens application home screen in a new window and closes the current window.
+     */
+    private void welcomeHome() {
+        Stage home = new Stage();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/home.fxml"));
+            Parent root = loader.load();
+            Scene homeScene = new Scene(root);
+            home.setScene(homeScene);
+            home.setTitle(App.resources.getString("appTitle"));
+            home.show();
+            home.setMaximized(true);
+            home.setMinHeight(500);
+            home.setMinWidth(600);
+            ((Stage) logInButton.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, App.resources.getString("homeWindowFailure")).show();
+            ((Stage) logInButton.getScene().getWindow()).close();
+        }
     }
 }

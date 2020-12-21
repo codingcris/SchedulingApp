@@ -1,11 +1,11 @@
 package org.example.application.customer;
 
+ import org.example.App;
+ import org.example.application.appointment.Appointment;
  import org.example.application.db.ConnectionPool;
 
- import java.sql.Connection;
- import java.sql.PreparedStatement;
- import java.sql.ResultSet;
- import java.sql.SQLException;
+ import java.sql.*;
+ import java.time.ZoneId;
  import java.util.ArrayList;
  import java.util.HashMap;
  import java.util.List;
@@ -27,17 +27,26 @@ public final class CustomerDaoImpl implements CustomerDao {
         if (dataSource != null) {
             this.dataSource = dataSource;
         } else {
-            throw new ConnectionPool.ConnectionsUnavailableException("Cannot establish database connections. If problem persists contact IT.");
+            throw new ConnectionPool.ConnectionsUnavailableException(App.resources.getString("databaseConnectionsError"));
         }
     }
 
     /**
-     * Retrieves a List of all customers in database.
-     * @return List of Customer objects.
+     * Retrieves the appointments for a customer with the given customerId and returns a boolean indicating whether or not
+     * the result is empty
+     * @return true if customer has no appointments in database, false otherwise.
+     */
+    public boolean hasNoAppointments(int customerId) {
+        return getCustomerAppointments(customerId).isEmpty();
+    }
+
+    /**
+     * Retrieves an ArrayList of all customers in database.
+     * @return ArrayList of Customer objects.
      */
     @Override
-    public List<Customer> getAllCustomers() {
-        List<Customer> customers = new ArrayList<>();
+    public ArrayList<Customer> getAllCustomers() {
+        ArrayList<Customer> customers = new ArrayList<>();
         Connection conn = null ;
 
         final String queryString = "SELECT * FROM customers;";
@@ -58,10 +67,11 @@ public final class CustomerDaoImpl implements CustomerDao {
 
         return customers;
     }
+
     /**
-     * Retrieves a customer from the database with the given Customer_ID value.
-     * @param customerID an integer representing the desired customer's Customer_ID.
-     * @return Customer with the given Customer_ID value.
+     * Retrieves a customer from the database with the given ID.
+     * @param customerID an integer representing the desired customer's ID.
+     * @return Customer with the given ID.
      */
     @Override
     public Customer getCustomer(int customerID) {
@@ -132,11 +142,14 @@ public final class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * Deletes the customer from the database with the given Customer_ID.
-     * @param customerID The Customer_ID with which to match the customer being removed from database.
+     * Deletes the customer from the database with the given ID.
+     * @param customerID The ID with which to match the customer being removed from database.
+     * @return true if delete is successful, false otherwise.
      */
     @Override
-    public void deleteCustomer(int customerID) {
+    public boolean deleteCustomer(int customerID) {
+        boolean success = false;
+
         final String queryString = "DELETE FROM customers WHERE Customer_ID=?";
         Connection conn = null;
 
@@ -146,7 +159,7 @@ public final class CustomerDaoImpl implements CustomerDao {
             try(PreparedStatement stmnt = conn.prepareStatement(queryString)) {
                 stmnt.setInt(1, customerID);
 
-                stmnt.executeUpdate();
+                success = stmnt.executeUpdate() == 1;
             }
 
         } catch (SQLException | ConnectionPool.ConnectionsUnavailableException throwables) {
@@ -155,6 +168,7 @@ public final class CustomerDaoImpl implements CustomerDao {
             dataSource.releaseConnection(conn);
         }
 
+        return success;
     }
 
     /**
@@ -189,6 +203,10 @@ public final class CustomerDaoImpl implements CustomerDao {
 
     }
 
+    /**
+     * Queries the database for countries of business and returns a map with the Country ID as key and Country Name as value.
+     * @return Map with countries of business.
+     */
     @Override
     public Map<Integer, String> getCountriesOfBusiness() {
         final String[] countriesOfBusiness = {"United States", "United Kingdom", "Canada"};
@@ -229,6 +247,11 @@ public final class CustomerDaoImpl implements CustomerDao {
 
         return countries;
     }
+
+    /**
+     * Queries the database for first level divisions and returns a map with the first level division ID as key and first level division name as value.
+     * @return Map with first level divisions corresponding to the countries of business.
+     */
     @Override
     public Map<Integer, String> getFirstLevelDivisions() {
         Connection conn = null;
@@ -254,7 +277,12 @@ public final class CustomerDaoImpl implements CustomerDao {
         return firstLevelDivs;
     }
 
-
+    /**
+     * Queries the database for first level divisions corresponding to a particular country with the given ID
+     * and returns a map with the first level divisions' IDs as key and first level divisions' names as value.
+     * @param countryId ID of country whose first level divisions we are querying for.
+     * @return Map with first level divisions corresponding to the countries of business.
+     */
     @Override
     public Map<Integer, String> getFirstLevelDivisionsByCountry(int countryId) {
         Connection conn = null;
@@ -282,6 +310,11 @@ public final class CustomerDaoImpl implements CustomerDao {
         return firstLevelDivs;
     }
 
+    /**
+     * Queries the database for the ID of the country to which the given first level division belongs.
+     * @param firstDivId The ID of the first level division whose country we are querying for.
+     * @return the ID of the country to which the first level division belongs.
+     */
     @Override
     public Integer getCountryIdFromFirstDivisionId(int firstDivId) {
         Connection conn = null;
@@ -309,11 +342,11 @@ public final class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * Takes a query result set and returns a List of  Customer objects in the result set.
+     * Takes a query result set and returns an ArrayList of Customer objects in the result set.
      * @param queryResults result set from an executed query.
      */
-    private List<Customer> customersFromQueryResult(ResultSet queryResults) {
-        List<Customer> customers = new ArrayList<>();
+    private ArrayList<Customer> customersFromQueryResult(ResultSet queryResults) {
+        ArrayList<Customer> customers = new ArrayList<>();
 
         try {
             while (queryResults.next()) {
@@ -331,5 +364,67 @@ public final class CustomerDaoImpl implements CustomerDao {
         }
 
         return customers;
+    }
+
+    /**
+     * Queries the database for all appointments belonging to a particular customer and return an ArrayList of Appointment
+     * objects.
+     * @param customerId the ID of the customer whose appointments we are querying for.
+     * @return ArrayList of appointments belonging to the given customer.
+     */
+    @Override
+    public ArrayList<Appointment> getCustomerAppointments(int customerId) {
+        ArrayList<Appointment> appointments = new ArrayList<>();
+
+        Connection conn = null;
+        final String queryString = "SELECT * FROM appointments WHERE Customer_ID=?";
+
+        try {
+            conn = dataSource.getConnection();
+
+            try (PreparedStatement stmt = conn.prepareStatement(queryString)) {
+                stmt.setInt(1, customerId);
+
+                ResultSet r = stmt.executeQuery();
+
+                appointments = appointmentsFromQueryResult(r);
+            }
+        } catch (ConnectionPool.ConnectionsUnavailableException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dataSource.releaseConnection(conn);
+        }
+
+        return appointments;
+    }
+
+    /**
+     * Takes a query result set and returns a List of Appointment objects from the result set.
+     * @param queryResults result set from an executed query.
+     * @return ArrayList with Appointment objects representing the queryResults contents.
+     */
+    private ArrayList<Appointment> appointmentsFromQueryResult(ResultSet queryResults) {
+        ArrayList<Appointment> appointments = new ArrayList<>();
+
+        try {
+            while (queryResults.next()) {
+                appointments.add( new Appointment(
+                        queryResults.getInt("Appointment_ID"),
+                        queryResults.getInt("Customer_ID"),
+                        queryResults.getInt("User_ID"),
+                        queryResults.getInt("Contact_ID"),
+                        queryResults.getString("Title"),
+                        queryResults.getString("Description"),
+                        queryResults.getString("Location"),
+                        queryResults.getString("Type"),
+                        ((Timestamp) queryResults.getObject("Start")).toLocalDateTime().atZone(ZoneId.systemDefault()),
+                        ((Timestamp) queryResults.getObject("End")).toLocalDateTime().atZone(ZoneId.systemDefault()))
+                );
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return appointments;
     }
 }
