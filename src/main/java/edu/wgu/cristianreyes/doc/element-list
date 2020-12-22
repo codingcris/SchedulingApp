@@ -1,0 +1,9 @@
+module:org.example
+org.example
+org.example.application.appointment
+org.example.application.contact
+org.example.application.customer
+org.example.application.db
+org.example.application.users
+org.example.bundles
+org.example.controllers

@@ -1,12 +1,12 @@
-module org.example {
+module edu.wgu.cristianreyes {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
     requires java.sql;
 
 
-    opens org.example.controllers to javafx.fxml;
-    opens org.example.application.appointment to javafx.base;
-    opens org.example.application.customer to javafx.base;
-    exports org.example;
+    opens edu.wgu.cristianreyes.controllers to javafx.fxml;
+    opens edu.wgu.cristianreyes.application.appointment to javafx.base;
+    opens edu.wgu.cristianreyes.application.customer to javafx.base;
+    exports edu.wgu.cristianreyes;
 }
